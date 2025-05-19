@@ -39,7 +39,7 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://modpack-manager.octsrv.org"},
+		AllowOrigins:     []string{"https://modpack-manager.octsrv.org", "https://localhost:5713"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -49,15 +49,21 @@ func main() {
 
 	authGroup := r.Group("/").Use(SimpleAuth())
 	{
+		// Modpack CRUD operations
 		authGroup.GET("/modpacks", GetModpacks)
 		authGroup.POST("/modpacks", CreateModpack)
 		authGroup.GET("/modpacks/:id", GetModpack)
 		authGroup.PATCH("/modpacks/:id", UpdateModpack)
 		authGroup.DELETE("/modpacks/:id", DeleteModpack)
-		authGroup.GET("/servers/modpacks", GetLatestModpacks)
-		authGroup.PUT("/servers/:server/modpack/:modpack_id", SetLatestModpack)
-		authGroup.DELETE("/servers/:server/modpack", DeleteLatestModpack)
+		// Publish modpacks
+		authGroup.GET("/published", GetLatestModpacks)
+		authGroup.PUT("/publish/:server/modpack/:modpack_id", SetLatestModpack)
+		authGroup.DELETE("/published/:server", DeleteLatestModpack)
 	}
+	r.GET("/published/:server", GetLatestModpack)
+
+	// Support for legacy URL
 	r.GET("/servers/:server/modpack", GetLatestModpack)
+
 	r.Run(":8080")
 }
