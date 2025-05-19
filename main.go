@@ -39,7 +39,7 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://modpack-manager.octsrv.org", "https://localhost:5713"},
+		AllowOrigins:     []string{"https://modpack-manager.octsrv.org", "http://localhost:5713"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
