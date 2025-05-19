@@ -54,9 +54,9 @@ func main() {
 		authGroup.GET("/modpacks/:id", GetModpack)
 		authGroup.PATCH("/modpacks/:id", UpdateModpack)
 		authGroup.DELETE("/modpacks/:id", DeleteModpack)
-		authGroup.GET("/servers/:server/modpacks", GetLatestModpacks)
+		authGroup.GET("/servers/modpacks", GetLatestModpacks)
 		authGroup.PUT("/servers/:server/modpack/:modpack_id", SetLatestModpack)
-		authGroup.DELETE("/servers/:server/modpack/:modpack_id", DeleteLatestModpack)
+		authGroup.DELETE("/servers/:server/modpack", DeleteLatestModpack)
 	}
 	r.GET("/servers/:server/modpack", GetLatestModpack)
 	r.Run(":8080")

@@ -86,6 +86,12 @@ func GetLatestModpack(c *gin.Context) {
 }
 
 func GetLatestModpacks(c *gin.Context) {
+	var latest []LatestModpack
+	if result := db.Preload("Modpack").Find(&latest); result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch latest modpacks"})
+		return
+	}
+	c.JSON(http.StatusOK, latest)
 }
 
 func SetLatestModpack(c *gin.Context) {
@@ -130,4 +136,6 @@ func SetLatestModpack(c *gin.Context) {
 }
 
 func DeleteLatestModpack(c *gin.Context) {
+	server := c.Param("server")
+	db.Delete(&LatestModpack{}, "server = ?", server)
 }
